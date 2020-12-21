@@ -1,23 +1,24 @@
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-function App() {
+import Layout from "./components/Layout";
+import PatientSearch from "./components/PatientSearch";
+import PatientDetails from "./components/PatientDetails";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Router>
+        <Switch>
+          <Route path="/:patient">
+            <PatientDetails />
+          </Route>
+          <Route exact path="/">
+            <PatientSearch />
+          </Route>
+        </Switch>
+      </Router>
+    </Layout>
   );
-}
+};
 
 export default App;
