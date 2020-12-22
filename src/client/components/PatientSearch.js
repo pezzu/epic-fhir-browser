@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 const SearchField = ({ label }) => {
   return (
     <div className="flex m-1">
-      <label className="w-1/6 font-semibold">{label}</label>
+      <label className="w-1/6 text-lg font-semibold">{label}</label>
       <input className="w-5/6 border border-gray-300 p-1" name="{label}" />
     </div>
   );
@@ -57,10 +57,10 @@ const PatientSearch = () => {
           <SearchField label="telecom" />
         </div>
         <div className="flex text-lg justify-around mt-3">
-          <button className="bg-white border-blue-500 border-2 text-blue-500 font-semibold py-2 px-4 rounded-xl shadow-lg focus:outline-none focus:shadow-outline">
+          <button className="bg-white border-blue-500 border-2 text-blue-500 font-semibold py-2 px-6 rounded-xl shadow-lg focus:outline-none focus:shadow-outline">
             Clear
           </button>
-          <button className="bg-blue-500 border-blue-500 border-2 text-white font-semibold py-2 px-4 rounded-xl shadow-lg focus:outline-none focus:shadow-outline">
+          <button className="bg-blue-500 border-blue-500 border-2 text-white font-semibold py-2 px-6 rounded-xl shadow-lg focus:outline-none focus:shadow-outline">
             Search
           </button>
         </div>
@@ -68,5 +68,7 @@ const PatientSearch = () => {
     </div>
   );
 };
+
+PatientSearch.propTypes = {};
 
 export default PatientSearch;

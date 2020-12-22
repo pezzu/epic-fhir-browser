@@ -6,6 +6,10 @@
     "@craco/craco": "^6.0.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "9",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-json-validator-middleware": "^2.1.1",
+    "http-status": "^1.5.0",
     "postcss": "7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -14,10 +18,13 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "scripts": {
-    "start": "craco start",
+    "dev": "concurrently --kill-others-on-fail \"yarn:server\" \"yarn:client\"",
+    "client": "craco start",
+    "server": "nodemon src/server/server.js",
+    "start": "node src/server/server.js",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -36,5 +43,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  },
+  "proxy": "http://localhost:8090"
 }
