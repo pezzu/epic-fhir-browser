@@ -98,7 +98,7 @@ const PatientSearch = () => {
           <SearchField label="partner-prefix" />
           <SearchField label="telecom" />
         </div>
-        {notFound && <div className="text-red-500 text-center">Patient not found</div> || <br/>}
+        {(notFound && <div className="text-red-500 text-center">Patient not found</div>) || <br/>}
         <div className="flex text-lg justify-around mt-8">
           <button
             type="button"

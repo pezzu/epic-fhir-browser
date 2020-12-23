@@ -1,8 +1,14 @@
 const httpStatus = require("http-status");
 const epic = require("../helpers/Epic");
 
-function details(req, res, next) {
-  console.log(`Details for ${req.params.id}`);
+async function details(req, res, next) {
+  try {
+    const patient = await epic.get(`api/FHIR/R4/Patient/${req.params.id}`);
+    res.json(patient);
+  } catch (err) {
+    err.status = httpStatus.INTERNAL_SERVER_ERROR;
+    next(err);
+  }
 }
 
 async function search(req, res, next) {
