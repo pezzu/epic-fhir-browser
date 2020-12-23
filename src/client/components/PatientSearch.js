@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -21,9 +21,12 @@ SearchField.propTypes = {
 const PatientSearch = () => {
   const form = useRef(null);
   const history = useHistory();
+  const [notFound, setNotFound] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    setNotFound(false);
 
     const formData = new FormData(event.target);
     const asString = new URLSearchParams(formData).toString();
@@ -31,13 +34,21 @@ const PatientSearch = () => {
     fetch(`/api/v1/patient/?${asString}`, { method: "GET" })
       .then((response) => {
         if (response.ok) {
-          response.json().then((found) => history.push(found.id));
+          response.json().then((results) => {
+            if(results.length > 0) {
+              history.push(results[0].id)
+            }
+            else {
+              setNotFound(true);
+            }
+          });
         }
       })
       .catch((e) => console.error(e));
   };
 
   const handleReset = (event) => {
+    setNotFound(false);
     form.current.reset();
   };
 
@@ -87,6 +98,7 @@ const PatientSearch = () => {
           <SearchField label="partner-prefix" />
           <SearchField label="telecom" />
         </div>
+        {notFound && <div className="text-red-500 text-center">Patient not found</div> || <br/>}
         <div className="flex text-lg justify-around mt-8">
           <button
             type="button"
