@@ -6,10 +6,7 @@ const SearchField = ({ label }) => {
   return (
     <div className="flex m-1">
       <label className="w-1/6 text-lg font-semibold">{label}</label>
-      <input
-        className="w-5/6 border border-gray-300 p-1"
-        name={label}
-      />
+      <input className="w-5/6 border border-gray-300 p-1" name={label} />
     </div>
   );
 };
@@ -35,10 +32,13 @@ const PatientSearch = () => {
       .then((response) => {
         if (response.ok) {
           response.json().then((results) => {
-            if(results.length > 0) {
-              history.push(results[0].id)
-            }
-            else {
+            if (results.length > 0) {
+              const MRN = results[0].identifier.find(
+                (i) => i.type?.text === "EXTERNAL"
+              ).value;
+              const query = new URLSearchParams(`identifier=EXTERNAL|${MRN}`)
+              history.push(`patient?${query}`);
+            } else {
               setNotFound(true);
             }
           });
@@ -98,7 +98,9 @@ const PatientSearch = () => {
           <SearchField label="partner-prefix" />
           <SearchField label="telecom" />
         </div>
-        {(notFound && <div className="text-red-500 text-center">Patient not found</div>) || <br/>}
+        {(notFound && (
+          <div className="text-red-500 text-center">Patient not found</div>
+        )) || <br />}
         <div className="flex text-lg justify-around mt-8">
           <button
             type="button"

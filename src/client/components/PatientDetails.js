@@ -1,24 +1,24 @@
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 
 const PatientDetails = () => {
-  const { patient: patientId } = useParams();
+  const { search } = useLocation();
   const [loading, setLoading] = useState(true);
-  const [patientData, setPatientData] = useState({});
+  const [details, setDetails] = useState({});
 
   useEffect(() => {
-    fetch(`/api/v1/patient/${patientId}`, { method: "GET" })
+    fetch(`/api/v1/patient/details/${search}`, { method: "GET" })
       .then((response) => response.json())
       .then((patient) => {
-        setPatientData(patient);
+        setDetails(patient);
         setLoading(false);
       });
-  }, [patientId]);
+  }, [search]);
 
   if(loading) return <Spinner/>;
 
-  return <div>Patient details for {patientId}</div>;
+  return <div>Patient details for {details.patient.id}</div>;
 };
 
 PatientDetails.protoTypes = {};
