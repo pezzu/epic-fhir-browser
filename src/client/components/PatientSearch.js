@@ -55,7 +55,7 @@ const PatientSearch = () => {
   return (
     <div className="w-full max-w-6xl">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded px-8 py-8 mb-4"
         onSubmit={handleSubmit}
         ref={form}
       >
