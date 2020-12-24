@@ -1,13 +1,13 @@
 const httpStatus = require("http-status");
-const epic = require("../helpers/Epic");
+const { R4 } = require("../services/epic-fhir");
 
 async function details(req, res, next) {
   try {
-    const patient = await epic.get("api/FHIR/R4/Patient", req.query)
+    const patient = await R4.searchOne("Patient", req.query);
 
     const [medication, condition] = await Promise.all([
-      epic.get("api/FHIR/R4/MedicationRequest", { patient: patient.entry[0].resource.id }),
-      epic.get("api/FHIR/R4/MedicationRequest", { patient: patient.entry[0].resource.id }),
+      R4.search("MedicationRequest", { patient: patient.id }),
+      R4.search("Condition", { patient: patient.id, category: "problem-list-item" }),
     ])
 
     res.json({patient, medication, condition});
@@ -19,13 +19,8 @@ async function details(req, res, next) {
 
 async function search(req, res, next) {
   try {
-    const result = await epic.get("api/FHIR/R4/Patient", req.query);
-
-    if (result.total > 0) {
-      res.json(result.entry.map((e) => e.resource));
-    } else {
-      res.json([]);
-    }
+    const result = await R4.search("Patient", req.query);
+    res.json(result);
   } catch (err) {
     err.status = httpStatus.INTERNAL_SERVER_ERROR;
     next(err);

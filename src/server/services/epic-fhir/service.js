@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const url = require("url");
 const axios = require("axios");
 
-const config = require("../config");
+const config = require("../../config");
 
 const EPIC_URL = config.epic_url;
 const AUTH_URL = `${config.epic_url}/oauth2/token`;
