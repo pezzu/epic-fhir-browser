@@ -37,20 +37,22 @@ const Table = ({ layout, items }) => {
     <table className="table-auto">
       <thead>
         <tr>
-          {Object.keys(layout).map((header) => (
-            <th>{header}</th>
+          {Object.keys(layout).map((header, i) => (
+            <th key={i}>{header}</th>
           ))}
         </tr>
       </thead>
-      {items.map((entry) => (
-        <tr>
-          {Object.values(layout).map((selector) => (
-            <td className="py-1 px-2 border-2 border-gray-500">
-              {selector(entry)}
-            </td>
-          ))}
-        </tr>
-      ))}
+      <tbody>
+        {items.map((entry, i) => (
+          <tr key={i}>
+            {Object.values(layout).map((selector, i) => (
+              <td key={i} className="py-1 px-2 border-2 border-gray-500">
+                {selector(entry)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 };
