@@ -32,37 +32,39 @@ const PatientInfo = (props) => {
   );
 };
 
-const MedicationEntry = ({ status, medication, dosage }) => {
+const Table = ({ layout, items }) => {
   return (
-    <tr>
-      <td className="py-1 px-2 border-2 border-gray-500">{status}</td>
-      <td className="py-1 px-2 border-2 border-gray-500">{medication}</td>
-      <td className="py-1 px-2 border-2 border-gray-500">{dosage}</td>
-    </tr>
+    <table className="table-auto">
+      <thead>
+        <tr>
+          {Object.keys(layout).map((header) => (
+            <th>{header}</th>
+          ))}
+        </tr>
+      </thead>
+      {items.map((entry) => (
+        <tr>
+          {Object.values(layout).map((selector) => (
+            <td className="py-1 px-2 border-2 border-gray-500">
+              {selector(entry)}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </table>
   );
 };
 
 const MedicationsList = ({ items }) => {
   return (
-    <table className="table-auto">
-      <thead>
-        <tr>
-          <th>Status</th>
-          <th>Medication</th>
-          <th>Dosage</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((entry) => (
-          <MedicationEntry
-            key={entry.id}
-            status={entry.status}
-            medication={entry.medicationReference.display}
-            dosage={entry.dosageInstruction[0].text}
-          />
-        ))}
-      </tbody>
-    </table>
+    <Table
+      layout={{
+        Status: (entry) => entry.status,
+        Medication: (entry) => entry.medicationReference.display,
+        Dosage: (entry) => entry.dosageInstruction[0].text,
+      }}
+      items={items}
+    />
   );
 };
 
@@ -78,32 +80,24 @@ const MedicationInfo = ({ items }) => {
   );
 };
 
-const ConditionsEntry = ({ status, condition, severity }) => {
-  return (
-    <div>
-      <div>{status}</div>
-      <div>{condition}</div>
-      <div>{severity}</div>
-    </div>
-  );
-};
-
 const ConditionsList = ({ items }) => {
-  return items.map((entry) => (
-    <ConditionsEntry
-      key={entry.id}
-      status={entry.clinicalStatus.text}
-      condition={entry.code.text}
-      severity={entry.severity?.text}
+  return (
+    <Table
+      layout={{
+        Status: (entry) => entry.clinicalStatus.text,
+        Conditon: (entry) => entry.code.text,
+        Severity: (entry) => entry.severity?.text,
+      }}
+      items={items}
     />
-  ));
+  );
 };
 
 const ConditionInfo = ({ items }) => {
   return (
     <Section header="Conditions">
       {items.length > 0 ? (
-        <ConditionsList items />
+        <ConditionsList items={items} />
       ) : (
         <div className="text-center">No conditions found for patient</div>
       )}

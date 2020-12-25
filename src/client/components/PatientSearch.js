@@ -83,6 +83,7 @@ const PatientSearch = () => {
           </ul>
         </div>
         <div className="mx-4 mt-8">
+          <SearchField label="_id" />
           <SearchField label="address" />
           <SearchField label="address-city" />
           <SearchField label="address-postalcode" />
