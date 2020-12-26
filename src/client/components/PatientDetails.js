@@ -121,7 +121,7 @@ const PatientDetails = () => {
       });
   }, [search]);
 
-  if (loading) return <Spinner />;
+  if (loading) return <Spinner delay={1500}/>;
 
   return (
     <div className="w-full max-w-6xl">
