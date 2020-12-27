@@ -52,7 +52,7 @@ PatientInfo.propTypes = {
 
 const Table = ({ layout, items }) => {
   return (
-    <table className="table-auto">
+    <table className="table-auto w-full">
       <thead>
         <tr>
           {Object.keys(layout).map((header, i) => (
