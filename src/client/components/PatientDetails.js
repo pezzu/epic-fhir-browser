@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 
 const Section = ({ header, children }) => {
@@ -13,6 +14,14 @@ const Section = ({ header, children }) => {
   );
 };
 
+Section.propTypes = {
+  header: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]).isRequired,
+};
+
 const LabeledField = ({ label, value }) => {
   return (
     <div className="flex w-full">
@@ -22,14 +31,23 @@ const LabeledField = ({ label, value }) => {
   );
 };
 
-const PatientInfo = (props) => {
+LabeledField.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
+
+const PatientInfo = ({ patient }) => {
   return (
     <Section header="Patient Information">
-      <LabeledField label="Name" value={props.name[0].text} />
-      <LabeledField label="Gender" value={props.gender} />
-      <LabeledField label="DOB" value={props.birthDate} />
+      <LabeledField label="Name" value={patient.name[0].text} />
+      <LabeledField label="Gender" value={patient.gender} />
+      <LabeledField label="DOB" value={patient.birthDate} />
     </Section>
   );
+};
+
+PatientInfo.propTypes = {
+  patient: PropTypes.object.isRequired,
 };
 
 const Table = ({ layout, items }) => {
@@ -57,6 +75,11 @@ const Table = ({ layout, items }) => {
   );
 };
 
+Table.propTypes = {
+  layout: PropTypes.object.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object),
+};
+
 const MedicationsList = ({ items }) => {
   return (
     <Table
@@ -70,6 +93,10 @@ const MedicationsList = ({ items }) => {
   );
 };
 
+MedicationsList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+};
+
 const MedicationInfo = ({ items }) => {
   return (
     <Section header="Medications">
@@ -80,6 +107,10 @@ const MedicationInfo = ({ items }) => {
       )}
     </Section>
   );
+};
+
+MedicationInfo.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
 };
 
 const ConditionsList = ({ items }) => {
@@ -95,6 +126,10 @@ const ConditionsList = ({ items }) => {
   );
 };
 
+ConditionsList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+};
+
 const ConditionInfo = ({ items }) => {
   return (
     <Section header="Conditions">
@@ -105,6 +140,10 @@ const ConditionInfo = ({ items }) => {
       )}
     </Section>
   );
+};
+
+ConditionInfo.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
 };
 
 const PatientDetails = () => {
@@ -121,12 +160,12 @@ const PatientDetails = () => {
       });
   }, [search]);
 
-  if (loading) return <Spinner delay={1500}/>;
+  if (loading) return <Spinner delay={1500} />;
 
   return (
     <div className="w-full max-w-6xl">
       <div className="bg-white shadow-md rounded px-8 py-8 mb-4 -mt-6">
-        <PatientInfo {...details.patient} />
+        <PatientInfo patient={details.patient} />
         <MedicationInfo items={details.medication} />
         <ConditionInfo items={details.condition} />
       </div>
