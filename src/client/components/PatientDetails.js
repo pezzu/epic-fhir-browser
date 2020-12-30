@@ -146,6 +146,37 @@ ConditionInfo.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
 };
 
+const ClinicalNote = ({ note }) => {
+  return (
+    <div className="border-2 mb-3">
+      <div className="text-center text-xl text-white bg-blue-500 mb-3">
+        {note.type.text}
+      </div>
+      <div className="px-2"
+        dangerouslySetInnerHTML={{ __html: note.content[0].attachment }}
+      ></div>
+    </div>
+  );
+};
+
+ClinicalNote.propTypes = {
+  note: PropTypes.object.isRequired,
+}
+
+const ClinicalNotesInfo = ({ items }) => {
+  return (
+    <Section header="Clinical Notes">
+      {items.map((note, i) => (
+        <ClinicalNote key={i} note={note} />
+      ))}
+    </Section>
+  );
+};
+
+ClinicalNotesInfo.protoTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+}
+
 const PatientDetails = () => {
   const { search } = useLocation();
   const [loading, setLoading] = useState(true);
@@ -166,8 +197,9 @@ const PatientDetails = () => {
     <div className="w-full max-w-6xl">
       <div className="bg-white shadow-md rounded px-8 py-8 mb-4 -mt-6">
         <PatientInfo patient={details.patient} />
-        <MedicationInfo items={details.medication} />
-        <ConditionInfo items={details.condition} />
+        <MedicationInfo items={details.medications} />
+        <ConditionInfo items={details.conditions} />
+        <ClinicalNotesInfo items={details.notes} />
       </div>
     </div>
   );
