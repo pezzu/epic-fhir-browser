@@ -52,6 +52,7 @@ async function details(req, res, next) {
       R4.search("DocumentReference", {
         patient: patient.id,
         category: "clinical-note",
+        docStatus: "final",
       }).then((documents) => expandContents(documents)),
     ]);
 
