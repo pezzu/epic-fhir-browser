@@ -166,8 +166,8 @@ ClinicalNote.propTypes = {
 const ClinicalNotesInfo = ({ items }) => {
   return (
     <Section header="Clinical Notes">
-      {items.map((note, i) => (
-        <ClinicalNote key={i} note={note} />
+      {items.map((note) => (
+        <ClinicalNote key={note.id} note={note} />
       ))}
     </Section>
   );

@@ -1,12 +1,28 @@
 const httpStatus = require("http-status");
 const { R4 } = require("../services/epic-fhir");
+const { JSDOM } = require("jsdom");
+
+const decode = (str) => Buffer.from(str, "base64").toString();
+
+const expandBase64 = (html) => {
+  const dom = new JSDOM(html);
+  const base64re = /base64;(\S+)/;
+  const text = dom.window.document.documentElement.textContent;
+  const base64 = text.match(base64re);
+  if (base64) {
+    dom.window.document.documentElement.textContent = decode(base64[1]);
+    return dom.serialize();
+  } else {
+    return html;
+  }
+};
 
 const expandAttachments = async (content) => {
   return Promise.all(
     content.map((item) =>
       R4.readOne(item.attachment.url).then((attachment) => ({
         ...item,
-        attachment,
+        attachment: expandBase64(attachment),
       }))
     )
   );
@@ -36,7 +52,7 @@ async function details(req, res, next) {
       R4.search("DocumentReference", {
         patient: patient.id,
         category: "clinical-note",
-      }).then(documents => expandContents(documents)),
+      }).then((documents) => expandContents(documents)),
     ]);
 
     res.json({ patient, medications, conditions, notes });
