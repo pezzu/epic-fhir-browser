@@ -37,11 +37,13 @@ LabeledField.propTypes = {
 };
 
 const PatientInfo = ({ patient }) => {
+  const [year, month, day] = patient.birthDate.split('-');
+  const birthDate = (year && month && day)? `${month}/${day}/${year}` : patient.birthDate;
   return (
     <Section header="Patient Information">
       <LabeledField label="Name" value={patient.name[0].text} />
       <LabeledField label="Gender" value={patient.gender} />
-      <LabeledField label="DOB" value={patient.birthDate} />
+      <LabeledField label="DOB" value={birthDate} />
     </Section>
   );
 };
